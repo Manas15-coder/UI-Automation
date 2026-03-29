@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'com.company'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    cucumberVersion = '7.15.0'
+    selenideVersion = '7.2.3'
+    junitVersion = '5.10.2'
+    junitPlatformVersion = '1.10.2'
+    springBootVersion = '3.2.5'
+    allureVersion = '2.24.0'
+}
+
+dependencies {
+
+    // 🔹 Selenide
+    implementation "com.codeborne:selenide:${selenideVersion}"
+
+    // 🔹 Spring Boot (for DI)
+    implementation "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+    testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+
+    // 🔹 Cucumber
+    testImplementation "io.cucumber:cucumber-java:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-junit-platform-engine:${cucumberVersion}"
+    testImplementation "io.cucumber:cucumber-spring:${cucumberVersion}"
+
+    // 🔹 JUnit 5
+    testImplementation "org.junit.jupiter:junit-jupiter:${junitVersion}"
+
+    // ✅ FIX: JUnit Platform Suite (for your runner)
+    testImplementation "org.junit.platform:junit-platform-suite:${junitPlatformVersion}"
+
+    // 🔹 Allure
+    testImplementation "io.qameta.allure:allure-cucumber7-jvm:${allureVersion}"
+
+    // 🔹 Logging (optional)
+    implementation "org.slf4j:slf4j-simple:2.0.12"
+}
+
+test {
+    useJUnitPlatform()
+
+    testLogging {
+        events "passed", "failed", "skipped"
+    }
+}
+
+allure {
+    version = "${allureVersion}"
+}
